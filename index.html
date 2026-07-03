@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valletti SRL — Import Export · Nuova vita ai tessuti</title>
+  <meta name="description"
+    content="Leader nella raccolta, selezione e commercializzazione all'ingrosso di abiti usati. 50+ anni, ISO 9001, ISO 14001. Pastorano (CE), Italia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,300&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ================================================
+   TOKENS
+================================================ */
+    :root {
+      --black: #000;
+      --dark: #0a0a0a;
+      --dark2: #111;
+      --dark3: #1c1c1e;
+      --mid: #2c2c2e;
+      --gray: #6e6e73;
+      --gray2: #aeaeb2;
+      --light: #f5f5f7;
+      --white: #fff;
+      --orange: #E8720C;
+      --ora2: #ff8c2b;
+      --navy: #0B1F3F;
+      --ease: cubic-bezier(.25, .46, .45, .94);
+      --spring: cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+    }
+
+    /* cursor glow */
+    #cg {
+      position: fixed;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 114, 12, .07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity .4s;
+      opacity: 0;
+    }
+
+    /* ================================================
+   NAV
+================================================ */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      padding: 0 48px;
+      transition: background .5s, backdrop-filter .5s, border-color .5s;
+    }
+
+    #nav.opaque {
+      background: rgba(0, 0, 0, .82);
+      backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .nav-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    /* Logo con immagine reale */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: opacity .3s;
+    }
+
+    .logo:hover {
+      opacity: .75;
+    }
+
+    .logo img {
+      height: 46px;
+      width: auto;
+      transform: translateY(2px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, .7);
+      padding: 7px 15px;
+      border-radius: 100px;
+      transition: color .25s, background .25s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #fff;
+      background: rgba(255, 255, 255, .09);
+    }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--orange);
+      color: #fff;
+      padding: 9px 20px;
+      border-radius: 100px;
+      transition: background .3s, transform .3s var(--spring), box-shadow .3s;
+      box-shadow: 0 4px 18px rgba(232, 114, 12, .35);
+    }
+
+    .nav-cta:hover {
+      background: var(--ora2);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 10px 30px rgba(232, 114, 12, .5);
+    }
+
+    /* ================================================
+   HERO — cinematic collage
+================================================ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    /* photo mosaic background */
+    .hero-mosaic {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: grid;
+      grid-template-columns: 55% 22.5% 22.5%;
+      grid-template-rows: 60% 40%;
+      gap: 3px;
+    }
+
+    .mosaic-cell {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mosaic-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 12s ease;
+    }
+
+    .mosaic-cell:hover img {
+      transform: scale(1.06);
+    }
+
+    /* pan animations for life */
+    .mosaic-cell:nth-child(1) img {
+      animation: pan1 18s ease-in-out infinite alternate;
+    }
+
+    .mosaic-cell:nth-child(2) img {
+      animation: pan2 22s ease-in-out infinite alternate;
+    }
+
+    .mosaic-cell:nth-child(3) img {
+      animation: pan3 16s ease-in-out infinite alternate;
+    }
+
+    .mosaic-cell:nth-child(4) img {
+      animation: pan4 20s ease-in-out infinite alternate;
+    }
+
+    .mosaic-cell:nth-child(5) img {
+      animation: pan1 25s ease-in-out infinite alternate;
+    }
+
+    @keyframes pan1 {
+      from {
+        transform: scale(1.06) translate(0, 0);
+      }
+
+      to {
+        transform: scale(1.06) translate(-2%, -1%);
+      }
+    }
+
+    @keyframes pan2 {
+      from {
+        transform: scale(1.08) translate(0, 0);
+      }
+
+      to {
+        transform: scale(1.08) translate(2%, 1%);
+      }
+    }
+
+    @keyframes pan3 {
+      from {
+        transform: scale(1.05) translate(-1%, 0);
+      }
+
+      to {
+        transform: scale(1.05) translate(1%, -1%);
+      }
+    }
+
+    @keyframes pan4 {
+      from {
+        transform: scale(1.07) translate(0, -1%);
+      }
+
+      to {
+        transform: scale(1.07) translate(-1%, 1%);
+      }
+    }
+
+    /* full dark overlay */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to bottom, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, .1) 30%, rgba(0, 0, 0, .2) 55%, rgba(0, 0, 0, .92) 100%),
+        linear-gradient(to right, rgba(0, 0, 0, .6) 0%, transparent 55%);
+    }
+
+    /* animated grid lines */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background-image: linear-gradient(rgba(255, 255, 255, .022) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .022) 1px, transparent 1px);
+      background-size: 90px 90px;
+      mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, .3) 25%, rgba(0, 0, 0, .3) 75%, transparent 100%);
+    }
+
+    /* orbs */
+    .orb {
+      position: absolute;
+      z-index: 2;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+    }
+
+    .orb1 {
+      width: 700px;
+      height: 700px;
+      top: -200px;
+      right: -150px;
+      background: radial-gradient(circle, rgba(232, 114, 12, .11), transparent 70%);
+      animation: orb-f 10s ease-in-out infinite alternate;
+    }
+
+    .orb2 {
+      width: 500px;
+      height: 500px;
+      bottom: 0;
+      left: -100px;
+      background: radial-gradient(circle, rgba(11, 31, 63, .5), transparent 70%);
+      animation: orb-f 14s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes orb-f {
+      from {
+        transform: scale(1) translate(0, 0);
+      }
+
+      to {
+        transform: scale(1.08) translate(20px, -20px);
+      }
+    }
+
+    /* content */
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      max-width: 1260px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 48px 110px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: fup .8s var(--ease) .15s forwards;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .4;
+        transform: scale(1.5);
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(46px, 6.8vw, 96px);
+      font-weight: 800;
+      line-height: 1.01;
+      letter-spacing: -.04em;
+      max-width: 900px;
+      opacity: 0;
+      animation: fup .9s var(--ease) .3s forwards;
+    }
+
+    .hero h1 .accent {
+      color: var(--orange);
+    }
+
+    .hero h1 .light-w {
+      font-weight: 300;
+    }
+
+    .hero-sub {
+      margin-top: 26px;
+      font-size: 18px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, .62);
+      max-width: 540px;
+      font-weight: 400;
+      opacity: 0;
+      animation: fup .9s var(--ease) .45s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 44px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fup .9s var(--ease) .6s forwards;
+    }
+
+    .btn-w {
+      background: var(--white);
+      color: var(--black);
+      padding: 15px 32px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 700;
+      transition: transform .3s var(--spring), box-shadow .3s, background .3s, color .3s;
+      box-shadow: 0 4px 22px rgba(255, 255, 255, .16);
+    }
+
+    .btn-w:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 14px 38px rgba(255, 255, 255, .25);
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .btn-g {
+      background: rgba(255, 255, 255, .09);
+      border: 1.5px solid rgba(255, 255, 255, .22);
+      color: #fff;
+      padding: 15px 32px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 600;
+      backdrop-filter: blur(12px);
+      transition: background .3s, border-color .3s, transform .3s var(--spring);
+    }
+
+    .btn-g:hover {
+      background: rgba(255, 255, 255, .17);
+      border-color: rgba(255, 255, 255, .45);
+      transform: translateY(-4px);
+    }
+
+    /* stats bar */
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      margin-top: 70px;
+      padding-top: 36px;
+      border-top: 1px solid rgba(255, 255, 255, .12);
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fup .9s var(--ease) .75s forwards;
+    }
+
+    .h-stat {
+      flex: 1;
+      padding-right: 36px;
+      min-width: 120px;
+      transition: transform .3s var(--ease);
+      cursor: default;
+    }
+
+    .h-stat:hover {
+      transform: translateY(-4px);
+    }
+
+    .h-stat:not(:last-child) {
+      border-right: 1px solid rgba(255, 255, 255, .1);
+      margin-right: 36px;
+    }
+
+    .h-stat b {
+      display: block;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -.025em;
+    }
+
+    .h-stat span {
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, .48);
+      font-weight: 500;
+      margin-top: 5px;
+      display: block;
+    }
+
+    /* scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      color: rgba(255, 255, 255, .28);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      animation: cue 2.5s ease-in-out infinite;
+    }
+
+    .scroll-cue svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    @keyframes cue {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(9px);
+      }
+    }
+
+    @keyframes fup {
+      from {
+        opacity: 0;
+        transform: translateY(38px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ================================================
+   COMMON SECTION
+================================================ */
+    .wrap {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .sec {
+      padding: 140px 0;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 18px;
+      height: 1.5px;
+      background: var(--orange);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    h2.hl {
+      font-size: clamp(32px, 4.5vw, 58px);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.05;
+    }
+
+    .lede {
+      font-size: 17px;
+      color: rgba(255, 255, 255, .52);
+      max-width: 540px;
+      margin-top: 20px;
+      line-height: 1.72;
+      font-weight: 400;
+    }
+
+    .lede.dk {
+      color: #666;
+    }
+
+    /* reveal */
+    .rv {
+      opacity: 0;
+      transform: translateY(42px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease);
+    }
+
+    .rv.on {
+      opacity: 1;
+      transform: none;
+    }
+
+    .rl {
+      opacity: 0;
+      transform: translateX(-42px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease);
+    }
+
+    .rl.on {
+      opacity: 1;
+      transform: none;
+    }
+
+    .rr {
+      opacity: 0;
+      transform: translateX(42px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease);
+    }
+
+    .rr.on {
+      opacity: 1;
+      transform: none;
+    }
+
+    .d1 {
+      transition-delay: .1s;
+    }
+
+    .d2 {
+      transition-delay: .2s;
+    }
+
+    .d3 {
+      transition-delay: .3s;
+    }
+
+    .d4 {
+      transition-delay: .4s;
+    }
+
+    .d5 {
+      transition-delay: .5s;
+    }
+
+    /* ================================================
+   MISSION — 5R
+================================================ */
+    #mission {
+      background: var(--dark2);
+      padding: 150px 0;
+    }
+
+    .mission-hd {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 80px;
+    }
+
+    .mission-hd .lede {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .five-r {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .rc {
+      position: relative;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 22px;
+      padding: 34px 22px 28px;
+      overflow: hidden;
+      cursor: default;
+      transition: background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+    }
+
+    .rc::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(232, 114, 12, .18), transparent 60%);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+
+    .rc::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--orange), var(--ora2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s var(--ease);
+    }
+
+    .rc:hover {
+      background: rgba(232, 114, 12, .1);
+      border-color: rgba(232, 114, 12, .38);
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, .55), 0 0 0 1px rgba(232, 114, 12, .22), inset 0 1px 0 rgba(255, 255, 255, .08);
+    }
+
+    .rc:hover::before {
+      opacity: 1;
+    }
+
+    .rc:hover::after {
+      transform: scaleX(1);
+    }
+
+    .rc-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(232, 114, 12, .45);
+      letter-spacing: .12em;
+      margin-bottom: 26px;
+      font-family: monospace;
+    }
+
+    .rc-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      background: rgba(232, 114, 12, .14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      transition: background .4s, transform .4s var(--spring);
+    }
+
+    .rc:hover .rc-icon {
+      background: rgba(232, 114, 12, .32);
+      transform: scale(1.12) rotate(-8deg);
+    }
+
+    .rc-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--orange);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .rc-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 8px;
+    }
+
+    .rc-desc {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .48);
+      line-height: 1.6;
+    }
+
+    .rc:hover .rc-desc {
+      color: rgba(255, 255, 255, .7);
+    }
+
+    /* ================================================
+   AZIENDA
+================================================ */
+    #azienda {
+      background: var(--black);
+    }
+
+    /* cinematic aerial photo */
+    .azienda-aerial {
+      width: 100%;
+      height: 68vh;
+      min-height: 480px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .azienda-aerial img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1s var(--ease);
+      transform: scale(1.03);
+    }
+
+    .azienda-aerial:hover img {
+      transform: scale(1.0);
+    }
+
+    .aerial-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .08) 0%, rgba(0, 0, 0, .55) 100%);
+    }
+
+    .aerial-badge {
+      position: absolute;
+      bottom: 36px;
+      left: 48px;
+      background: rgba(0, 0, 0, .6);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 100px;
+      padding: 10px 22px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: background .3s, transform .3s var(--spring);
+    }
+
+    .azienda-aerial:hover .aerial-badge {
+      background: rgba(232, 114, 12, .75);
+      transform: translateY(-2px);
+    }
+
+    .aerial-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+    }
+
+    /* content */
+    .azienda-body {
+      padding: 100px 0;
+    }
+
+    .az-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 90px;
+      align-items: start;
+    }
+
+    /* stat tiles */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .07);
+    }
+
+    .stat-tile {
+      background: rgba(255, 255, 255, .03);
+      padding: 36px 28px;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+      transition: background .35s var(--ease), transform .35s var(--ease);
+    }
+
+    .stat-tile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(232, 114, 12, .6), transparent);
+      transform: scaleX(0);
+      transition: transform .4s var(--ease);
+    }
+
+    .stat-tile:hover {
+      background: rgba(232, 114, 12, .09);
+      transform: scale(1.015);
+    }
+
+    .stat-tile:hover::before {
+      transform: scaleX(1);
+    }
+
+    .stat-tile b {
+      display: block;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: #fff;
+    }
+
+    .stat-tile span {
+      font-size: 12.5px;
+      color: var(--gray);
+      font-weight: 500;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ================================================
+   SERVICES — full-bleed alternating
+================================================ */
+    #servizi {
+      background: var(--light);
+      color: var(--dark);
+      padding: 0;
+    }
+
+    .srv {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 620px;
+    }
+
+    .srv.flip {
+      direction: rtl;
+    }
+
+    .srv.flip>* {
+      direction: ltr;
+    }
+
+    .srv-img {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .srv-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s var(--ease);
+    }
+
+    .srv:hover .srv-img img {
+      transform: scale(1.06);
+    }
+
+    .srv-img-dk {
+      background: linear-gradient(135deg, var(--navy), #0a1d38);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      transition: background .5s;
+    }
+
+    .srv:hover .srv-img-dk {
+      background: linear-gradient(135deg, #0d2040, #061220);
+    }
+
+    .srv-big-icon {
+      width: 80px;
+      height: 80px;
+      color: var(--orange);
+      opacity: .55;
+      transition: opacity .4s, transform .4s var(--spring);
+    }
+
+    .srv:hover .srv-big-icon {
+      opacity: 1;
+      transform: scale(1.12) rotate(-6deg);
+    }
+
+    .srv-txt {
+      padding: 80px 68px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--light);
+      transition: background .4s;
+    }
+
+    .srv:hover .srv-txt {
+      background: #e8e8ed;
+    }
+
+    .srv-n {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 14px;
+    }
+
+    .srv-txt h3 {
+      font-size: clamp(26px, 3vw, 42px);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--dark);
+      margin-bottom: 18px;
+      line-height: 1.1;
+    }
+
+    .srv-txt p {
+      font-size: 15.5px;
+      color: #555;
+      line-height: 1.78;
+      max-width: 400px;
+    }
+
+    .srv-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+      transition: gap .3s var(--spring);
+    }
+
+    .srv:hover .srv-more {
+      gap: 14px;
+    }
+
+    .srv-more svg {
+      width: 16px;
+      height: 16px;
+      transition: transform .3s var(--ease);
+    }
+
+    .srv:hover .srv-more svg {
+      transform: translateX(4px);
+    }
+
+    /* ================================================
+   PHOTO GALLERY STRIP
+================================================ */
+    #gallery {
+      background: var(--black);
+      padding: 3px 0;
+    }
+
+    .gal-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 300px 300px;
+      gap: 3px;
+    }
+
+    .gi {
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .gi img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .7s var(--ease);
+    }
+
+    .gi:hover img {
+      transform: scale(1.08);
+    }
+
+    .gi-ov {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, .65) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+
+    .gi:hover .gi-ov {
+      opacity: 1;
+    }
+
+    .gi-lbl {
+      position: absolute;
+      bottom: 18px;
+      left: 18px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .4s, transform .4s var(--ease);
+    }
+
+    .gi:hover .gi-lbl {
+      opacity: 1;
+      transform: none;
+    }
+
+    .gi:nth-child(1) {
+      grid-row: 1/3;
+    }
+
+    /* tall left */
+
+    /* ================================================
+   CERTIFICATIONS
+================================================ */
+    #certificazioni {
+      background: var(--dark2);
+      padding: 150px 0;
+    }
+
+    .certs-hd {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 80px;
+    }
+
+    .certs-hd .lede {
+      margin: auto;
+      text-align: center;
+    }
+
+    .cert-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .cert-card {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 24px;
+      padding: 44px 40px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+      transition: background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s;
+    }
+
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(232, 114, 12, .12), transparent 60%);
+      opacity: 0;
+      transition: opacity .5s;
+    }
+
+    .cert-card:hover {
+      background: rgba(255, 255, 255, .08);
+      border-color: rgba(232, 114, 12, .38);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 56px rgba(0, 0, 0, .5), 0 0 0 1px rgba(232, 114, 12, .18);
+    }
+
+    .cert-card:hover::before {
+      opacity: 1;
+    }
+
+    .cert-logo-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 14px 20px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .4s var(--spring), box-shadow .4s;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+    }
+
+    .cert-card:hover .cert-logo-box {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, .35);
+    }
+
+    .cert-logo-box img {
+      height: 56px;
+      width: auto;
+    }
+
+    .cert-txt h3 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 8px;
+    }
+
+    .cert-txt p {
+      font-size: 13.5px;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    /* confindustria wide card */
+    .conf-card {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 24px;
+      padding: 52px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+      transition: background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s;
+    }
+
+    .conf-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 50%, rgba(232, 114, 12, .1), transparent 55%);
+      opacity: 0;
+      transition: opacity .5s;
+    }
+
+    .conf-card:hover {
+      background: rgba(255, 255, 255, .07);
+      border-color: rgba(232, 114, 12, .3);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+    }
+
+    .conf-card:hover::before {
+      opacity: 1;
+    }
+
+    .conf-txt h3 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+    }
+
+    .conf-txt p {
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    .conf-logo {
+      background: #fff;
+      border-radius: 18px;
+      padding: 22px 34px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .4s var(--spring), box-shadow .4s;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+    }
+
+    .conf-card:hover .conf-logo {
+      transform: scale(1.06) rotate(-1.5deg);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, .38);
+    }
+
+    .conf-logo img {
+      height: 56px;
+      width: auto;
+    }
+
+    /* ================================================
+   CONTACT
+================================================ */
+    #contatti {
+      background: var(--dark3);
+      padding: 0;
+    }
+
+    .cnt-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 150px 48px;
+    }
+
+    .cnt-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      margin-top: 72px;
+    }
+
+    .cc {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 18px;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: background .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease), box-shadow .35s;
+    }
+
+    .cc::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--orange);
+      border-radius: 0 3px 3px 0;
+      transform: scaleY(0);
+      transition: transform .35s var(--ease);
+    }
+
+    .cc:hover {
+      background: rgba(255, 255, 255, .08);
+      border-color: rgba(232, 114, 12, .28);
+      transform: translateX(8px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .3);
+    }
+
+    .cc:hover::after {
+      transform: scaleY(1);
+    }
+
+    .cc-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(232, 114, 12, .14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background .35s, transform .35s var(--spring);
+    }
+
+    .cc:hover .cc-icon {
+      background: var(--orange);
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    .cc-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--orange);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+    }
+
+    .cc:hover .cc-icon svg {
+      stroke: #fff;
+    }
+
+    .cc b {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .cc span {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 2px;
+      display: block;
+    }
+
+    .form-box {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 28px;
+      padding: 50px 44px;
+    }
+
+    .form-box h3 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -.025em;
+      margin-bottom: 8px;
+    }
+
+    .form-box p {
+      color: var(--gray);
+      font-size: 14px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .fld {
+      margin-bottom: 14px;
+    }
+
+    .fld input,
+    .fld select,
+    .fld textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, .06);
+      border: 1.5px solid rgba(255, 255, 255, .1);
+      border-radius: 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      transition: border-color .3s, background .3s, box-shadow .3s;
+      outline: none;
+    }
+
+    .fld input:focus,
+    .fld select:focus,
+    .fld textarea:focus {
+      border-color: rgba(232, 114, 12, .65);
+      background: rgba(255, 255, 255, .1);
+      box-shadow: 0 0 0 3px rgba(232, 114, 12, .12);
+    }
+
+    .fld input::placeholder,
+    .fld textarea::placeholder {
+      color: rgba(255, 255, 255, .22);
+    }
+
+    .fld select option {
+      background: var(--dark3);
+      color: #fff;
+    }
+
+    .sbtn {
+      width: 100%;
+      background: var(--orange);
+      color: #fff;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background .3s, transform .3s var(--spring), box-shadow .3s;
+      box-shadow: 0 6px 24px rgba(232, 114, 12, .35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sbtn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .18), transparent);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .sbtn:hover {
+      background: #d5650a;
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 14px 36px rgba(232, 114, 12, .5);
+    }
+
+    .sbtn:hover::after {
+      opacity: 1;
+    }
+
+    .sbtn:active {
+      transform: scale(.98);
+    }
+
+    /* ================================================
+   FOOTER
+================================================ */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255, 255, 255, .06);
+      padding: 56px 48px 36px;
+    }
+
+    .ft-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .ft-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ft-logo img {
+      height: 38px;
+      width: auto;
+    }
+
+    .ft-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .ft-links a {
+      font-size: 12px;
+      color: var(--gray);
+      transition: color .25s;
+    }
+
+    .ft-links a:hover {
+      color: #fff;
+    }
+
+    .ft-socials {
+      display: flex;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .ft-socials a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      transition: background .3s, color .3s, transform .3s var(--spring);
+    }
+
+    .ft-socials a:hover {
+      background: var(--orange);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+
+    .ft-socials svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .ft-copy {
+      max-width: 1260px;
+      margin: 32px auto 0;
+      padding: 0 48px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .22);
+      text-align: center;
+    }
+
+    /* ================================================
+   RESPONSIVE
+================================================ */
+    @media(max-width:1100px) {
+      .five-r {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .az-split {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .srv {
+        grid-template-columns: 1fr;
+      }
+
+      .srv.flip {
+        direction: ltr;
+      }
+
+      .srv-img,
+      .srv-img-dk {
+        min-height: 300px;
+      }
+
+      .cert-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width:768px) {
+      #nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-content {
+        padding: 0 24px 80px;
+      }
+
+      .wrap {
+        padding: 0 24px;
+      }
+
+      .five-r {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gal-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 220px 220px;
+      }
+
+      .gi:nth-child(1) {
+        grid-row: auto;
+      }
+
+      .cnt-inner {
+        padding: 100px 24px;
+      }
+
+      .form-box {
+        padding: 32px 24px;
+      }
+
+      .conf-card {
+        padding: 36px 28px;
+        flex-direction: column;
+      }
+
+      footer {
+        padding: 40px 24px 24px;
+      }
+
+      .ft-copy {
+        padding: 0 24px;
+      }
+    }
+
+    @media(max-width:480px) {
+      .five-r {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .hero-stats {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .h-stat:not(:last-child) {
+        border: none;
+        margin: 0;
+      }
+
+      .gal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gi:nth-child(1) {
+        grid-row: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- cursor glow -->
+  <div id="cg"></div>
+
+  <!-- ================================================
+     NAV
+================================================ -->
+  <header id="nav">
+    <div class="nav-inner">
+      <a class="logo" href="#hero">
+        <img src="img-logo.png" alt="Valletti SRL logo">
+      </a>
+      <nav class="nav-links">
+        <a href="#mission" id="nl-m">Missione</a>
+        <a href="#azienda" id="nl-a">Azienda</a>
+        <a href="#servizi" id="nl-s">Servizi</a>
+        <a href="#contatti" id="nl-c">Contatti</a>
+      </nav>
+      <a class="nav-cta" href="#contatti" id="nav-cta">Contattaci</a>
+    </div>
+  </header>
+
+  <!-- ================================================
+     HERO — photo mosaic fullscreen
+================================================ -->
+  <section id="hero">
+    <!-- MOSAIC: 5 celle reali -->
+    <div class="hero-mosaic">
+      <div class="mosaic-cell" style="grid-row:1/3;">
+        <img src="img-stabilimento.png" alt="Stabilimento Valletti dall'alto">
+      </div>
+      <div class="mosaic-cell">
+        <img src="img-nastro.png" alt="Nastro trasportatore abiti">
+      </div>
+      <div class="mosaic-cell">
+        <img src="img-selezione.png" alt="Selezione automatica capi">
+      </div>
+      <div class="mosaic-cell">
+        <img src="img-lavoratore.png" alt="Operatore Valletti al lavoro">
+      </div>
+      <div class="mosaic-cell">
+        <img src="img-capi.png" alt="Capi selezionati pronti">
+      </div>
+    </div>
+
+    <div class="hero-overlay"></div>
+    <div class="hero-grid"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="tag-dot"></span>
+        Import &amp; Export · Pastorano (CE), Italia · Est. 1970
+      </div>
+      <h1>
+        Cinquant'anni<br>
+        di storia. <span class="accent">Una nuova</span><br>
+        <span class="light-w">vita</span> per ogni tessuto.
+      </h1>
+      <p class="hero-sub">
+        Leader nella raccolta, selezione e commercializzazione all'ingrosso di abiti usati per i mercati internazionali.
+        Qualità, tracciabilità e sostenibilità in ogni bala.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-w" href="#servizi" id="h-btn-s">Scopri i servizi</a>
+        <a class="btn-g" href="#contatti" id="h-btn-c">Richiedi una fornitura</a>
+      </div>
+      <div class="hero-stats">
+        <div class="h-stat"><b>50+</b><span>Anni di esperienza</span></div>
+        <div class="h-stat"><b>ISO 9001</b><span>ISO 14001 certificata</span></div>
+        <div class="h-stat"><b>100%</b><span>Team amm. femminile</span></div>
+        <div class="h-stat"><b>Global</b><span>Export internazionale</span></div>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <span>SCOPRI</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 5v14M5 12l7 7 7-7" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================================================
+     MISSIONE
+================================================ -->
+  <section id="mission">
+    <div class="wrap">
+      <div class="mission-hd rv">
+        <div class="eyebrow">La nostra missione</div>
+        <h2 class="hl">I cinque gesti che danno una seconda vita ai vestiti</h2>
+        <p class="lede">Il nostro approccio alle 5R guida ogni processo, dalla raccolta fino alla spedizione finale
+          verso i mercati mondiali.</p>
+      </div>
+      <div class="five-r">
+        <div class="rc rv d1" id="rc-reduce">
+          <div class="rc-num">01</div>
+          <div class="rc-icon"><svg viewBox="0 0 24 24">
+              <path d="M5 12h14" stroke-width="2.5" />
+              <path d="M5 12h14M12 5v14" opacity=".25" />
+            </svg></div>
+          <div class="rc-title">Reduce</div>
+          <div class="rc-desc">Ridurre gli sprechi in ogni fase della filiera produttiva</div>
+        </div>
+        <div class="rc rv d2" id="rc-reuse">
+          <div class="rc-num">02</div>
+          <div class="rc-icon"><svg viewBox="0 0 24 24">
+              <path d="M4 8l8-5 8 5v11a1 1 0 01-1 1H5a1 1 0 01-1-1V8z" />
+              <path d="M9 21V12h6v9" />
+            </svg></div>
+          <div class="rc-title">Reuse</div>
+          <div class="rc-desc">Riutilizzare i capi, dare loro una seconda possibilità</div>
+        </div>
+        <div class="rc rv d3" id="rc-recycle">
+          <div class="rc-num">03</div>
+          <div class="rc-icon"><svg viewBox="0 0 24 24">
+              <polyline points="1 4 1 10 7 10" />
+              <polyline points="23 20 23 14 17 14" />
+              <path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15" />
+            </svg></div>
+          <div class="rc-title">Recycle</div>
+          <div class="rc-desc">Riciclare i materiali, trasformare gli scarti in risorse</div>
+        </div>
+        <div class="rc rv d4" id="rc-rewear">
+          <div class="rc-num">04</div>
+          <div class="rc-icon"><svg viewBox="0 0 24 24">
+              <path
+                d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z" />
+            </svg></div>
+          <div class="rc-title">Rewear</div>
+          <div class="rc-desc">Indossare di nuovo — ogni capo merita una nuova storia</div>
+        </div>
+        <div class="rc rv d5" id="rc-resell">
+          <div class="rc-num">05</div>
+          <div class="rc-icon"><svg viewBox="0 0 24 24">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.95-1.57l1.65-7.43H6" />
+            </svg></div>
+          <div class="rc-title">Resell</div>
+          <div class="rc-desc">Rivendere con valore nei mercati internazionali</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+     AZIENDA
+================================================ -->
+  <section id="azienda">
+    <div class="azienda-aerial rv">
+      <img src="img-stabilimento.png" alt="Veduta aerea stabilimento Valletti SRL — Pastorano (CE)">
+      <div class="aerial-overlay"></div>
+      <div class="aerial-badge">
+        <span class="aerial-dot"></span>
+        Stabilimento Valletti SRL · Pastorano (CE) · 81050
+      </div>
+    </div>
+    <div class="azienda-body">
+      <div class="wrap">
+        <div class="az-split">
+          <div class="rl">
+            <div class="eyebrow">Chi siamo</div>
+            <h2 class="hl">Cinquant'anni di esperienza nel recupero e riciclo di abiti usati</h2>
+            <p class="lede" style="margin-top:24px;">Un team specializzato, tecnologie moderne e sistemi di automazione
+              all'avanguardia per ottimizzare tempi e qualità, ad ogni fase della filiera.</p>
+          </div>
+          <div class="rr d2">
+            <div class="stat-grid">
+              <div class="stat-tile" id="st-1"><b>100%</b><span>Soddisfazione cliente</span></div>
+              <div class="stat-tile" id="st-2"><b>50+</b><span>Team qualificato</span></div>
+              <div class="stat-tile" id="st-3"><b>Hi‑Tech</b><span>Attrezzature avanzate</span></div>
+              <div class="stat-tile" id="st-4"><b>Multi</b><span>Staff multilingue</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+     SERVIZI
+================================================ -->
+  <section id="servizi">
+    <div class="srv" id="srv-1">
+      <div class="srv-img"><img src="img-nastro.png" alt="Nastro trasportatore capi usati Valletti"></div>
+      <div class="srv-txt">
+        <div class="srv-n">01 — Collection</div>
+        <h3>Raccolta</h3>
+        <p>Abbigliamento, calzature e accessori raccolti dalle migliori fonti in Italia e all'estero. Un processo
+          capillare per garantire volume e continuità di fornitura.</p>
+        <div class="srv-more">Scopri di più <svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg></div>
+      </div>
+    </div>
+    <div class="srv flip" id="srv-2">
+      <div class="srv-img"><img src="img-selezione.png" alt="Selezione automatica abiti Valletti"></div>
+      <div class="srv-txt">
+        <div class="srv-n">02 — Selection</div>
+        <h3>Selezione</h3>
+        <p>Smistamento automatizzato per categoria, tipologia e qualità. Operatori esperti e macchine avanzate
+          garantiscono standard rigorosi per ogni mercato.</p>
+        <div class="srv-more">Scopri di più <svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg></div>
+      </div>
+    </div>
+    <div class="srv" id="srv-3">
+      <div class="srv-img"><img src="img-lavoratore.png" alt="Operatore Valletti che ispeziona un capo"></div>
+      <div class="srv-txt">
+        <div class="srv-n">03 — Quality Control</div>
+        <h3>Controllo qualità</h3>
+        <p>Ogni capo viene ispezionato manualmente dal nostro team per verificare integrità e conformità agli standard
+          richiesti dai partner internazionali.</p>
+        <div class="srv-more">Scopri di più <svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg></div>
+      </div>
+    </div>
+    <div class="srv flip" id="srv-4">
+      <div class="srv-img"><img src="img-capi.png" alt="Capi selezionati e ripiegati pronti"></div>
+      <div class="srv-txt">
+        <div class="srv-n">04 — Packaging</div>
+        <h3>Confezionamento</h3>
+        <p>La merce viene disposta con cura in sacchi o balle di pesi e dimensioni diverse, pronta per la spedizione
+          verso i mercati di tutto il mondo.</p>
+        <div class="srv-more">Scopri di più <svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+     GALLERY STRIP
+================================================ -->
+  <div id="gallery">
+    <div class="gal-grid">
+      <div class="gi" id="g1">
+        <img src="img-stabilimento.png" alt="Stabilimento Valletti SRL dall'alto">
+        <div class="gi-ov"></div>
+        <div class="gi-lbl">📍 Pastorano (CE)</div>
+      </div>
+      <div class="gi" id="g2">
+        <img src="img-nastro.png" alt="Nastro trasportatore">
+        <div class="gi-ov"></div>
+        <div class="gi-lbl">⚙️ Nastro selezione</div>
+      </div>
+      <div class="gi" id="g3">
+        <img src="img-selezione.png" alt="Selezione capi">
+        <div class="gi-ov"></div>
+        <div class="gi-lbl">🗂️ Smistamento</div>
+      </div>
+      <div class="gi" id="g4">
+        <img src="img-lavoratore.png" alt="Operatore al lavoro">
+        <div class="gi-ov"></div>
+        <div class="gi-lbl">👔 Controllo qualità</div>
+      </div>
+      <div class="gi" id="g5">
+        <img src="img-capi.png" alt="Capi selezionati">
+        <div class="gi-ov"></div>
+        <div class="gi-lbl">✅ Prodotto pronto</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================
+     CERTIFICAZIONI
+================================================ -->
+  <section id="certificazioni">
+    <div class="wrap">
+      <div class="certs-hd rv">
+        <div class="eyebrow" style="justify-content:center;">Qualità certificata</div>
+        <h2 class="hl">Certificata e riconosciuta a livello internazionale</h2>
+        <p class="lede">Standard di qualità e sostenibilità verificati da enti terzi indipendenti, riconosciuti in tutto
+          il mondo.</p>
+      </div>
+      <div class="cert-row">
+        <div class="cert-card rv d1" id="cert-9001">
+          <div class="cert-logo-box">
+            <img src="img-cert-iso9001.png" alt="ISO 9001:2015 — European Certification Institute">
+          </div>
+          <div class="cert-txt">
+            <h3>ISO 9001:2015</h3>
+            <p>Certificazione del sistema di gestione della qualità. N. VALL3347Q2101 — European Certification
+              Institute.</p>
+          </div>
+        </div>
+        <div class="cert-card rv d2" id="cert-14001">
+          <div class="cert-logo-box">
+            <img src="img-cert-iso14001.png" alt="ISO 14001:2015 — European Certification Institute">
+          </div>
+          <div class="cert-txt">
+            <h3>ISO 14001:2015</h3>
+            <p>Certificazione del sistema di gestione ambientale. N. VALL3347E2102 — European Certification Institute.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="conf-card rv d3" id="cert-conf">
+        <div class="conf-txt">
+          <h3>Confindustria Caserta</h3>
+          <p>Valletti SRL è membro attivo di Confindustria Caserta — Unione degli Industriali della Provincia. Un
+            riconoscimento che testimonia il ruolo di rilievo nel tessuto industriale campano e l'impegno verso standard
+            imprenditoriali elevati.</p>
+        </div>
+        <div class="conf-logo">
+          <img src="img-confindustria.png" alt="Confindustria Caserta — Unione degli Industriali">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+     CONTATTI
+================================================ -->
+  <section id="contatti">
+    <div class="cnt-inner">
+      <div class="rv">
+        <div class="eyebrow">Contatti</div>
+        <h2 class="hl">Parliamo della tua<br>prossima fornitura</h2>
+        <p class="lede">Siamo pronti ad ascoltarti. Contattaci via email, telefono o compila il modulo qui sotto.</p>
+      </div>
+      <div class="cnt-split">
+        <div class="rl d1">
+          <div
+            style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:22px;">
+            Dove trovarci</div>
+          <a href="https://www.google.com/maps/place/Valletti+Srl/@41.1566756,14.1718836,16z/data=!4m6!3m5!1s0x133afbaf859aacf7:0x525df78d726fc140!8m2!3d41.157138!4d14.1711443!16s%2Fg%2F1tctzpxr?entry=ttu&g_ep=EgoyMDI2MDYyOS4wIKXMDSoASAFQAw%3D%3D"
+            target="_blank" rel="noopener" class="cc" id="cc-s">
+            <div class="cc-icon"><svg viewBox="0 0 24 24">
+                <path d="M12 21s7-6.5 7-11.5a7 7 0 10-14 0C5 14.5 12 21 12 21z" />
+                <circle cx="12" cy="9.5" r="2.5" />
+              </svg></div>
+            <div><b>Sede</b><span>Pastorano (CE), Italia — 81050</span></div>
+          </a>
+          <div class="cc" id="cc-e">
+            <div class="cc-icon"><svg viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" />
+              </svg></div>
+            <div><b>Email</b><span>info@vallettisrl.it</span></div>
+          </div>
+          <div class="cc" id="cc-t">
+            <div class="cc-icon"><svg viewBox="0 0 24 24">
+                <path
+                  d="M22 16.9v3a2 2 0 01-2.2 2A19.8 19.8 0 013 5.2 2 2 0 015 3h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8.9 10.6a16 16 0 006.5 6.5l1.2-1.2a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2.1z" />
+              </svg></div>
+            <div><b>Telefono</b><span>+39 0823 883419</span></div>
+          </div>
+          <div class="cc" id="cc-w">
+            <div class="cc-icon"><svg viewBox="0 0 24 24">
+                <path
+                  d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+              </svg></div>
+            <div><b>WhatsApp</b><span>+39 366 900 0864</span></div>
+          </div>
+        </div>
+        <div class="form-box rr d2">
+          <h3>Richiedi informazioni</h3>
+          <p>Ti risponderemo entro un giorno lavorativo.</p>
+          <div class="fld"><input id="fn" type="text" placeholder="Nome e cognome"></div>
+          <div class="fld"><input id="fe" type="email" placeholder="Email aziendale"></div>
+          <div class="fld">
+            <select id="fs">
+              <option value="">Servizio richiesto</option>
+              <option>Raccolta</option>
+              <option>Selezione</option>
+              <option>Confezionamento</option>
+              <option>Export internazionale</option>
+              <option>Altro</option>
+            </select>
+          </div>
+          <div class="fld"><textarea id="fm" rows="4" placeholder="Messaggio"></textarea></div>
+          <button class="sbtn" id="sb">Invia richiesta &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+     FOOTER
+================================================ -->
+  <footer>
+    <div class="ft-inner">
+      <div class="ft-logo" style="flex-direction:column;align-items:flex-start;gap:0;">
+        <img src="img-logo.png" alt="Valletti SRL">
+        <div class="ft-socials">
+          <a href="https://www.instagram.com/valletti_used_clothing/" target="_blank" rel="noopener"
+            aria-label="Instagram"><svg viewBox="0 0 24 24">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            </svg></a>
+          <a href="https://www.linkedin.com/company/valletti-srl-secondhand-wholesaler/" target="_blank" rel="noopener"
+            aria-label="LinkedIn"><svg viewBox="0 0 24 24">
+              <path
+                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+            </svg></a>
+          <a href="https://www.facebook.com/valletti.srl" target="_blank" rel="noopener" aria-label="Facebook"><svg
+              viewBox="0 0 24 24">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg></a>
+          <a href="https://www.youtube.com/watch?v=dbL28SxFgNQ" target="_blank" rel="noopener" aria-label="YouTube"><svg
+              viewBox="0 0 24 24">
+              <path
+                d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg></a>
+        </div>
+      </div>
+      <nav class="ft-links">
+        <a href="#mission">Missione</a>
+        <a href="#azienda">Azienda</a>
+        <a href="#servizi">Servizi</a>
+        <a href="#certificazioni">Certificazioni</a>
+        <a href="#contatti">Contatti</a>
+      </nav>
+    </div>
+    <p class="ft-copy">
+      © 2025 Valletti SRL · Pastorano (CE), Italia · P.IVA e dati legali su richiesta<br>
+      <span style="opacity:0.6;margin-top:10px;display:block;letter-spacing:0.04em;">Developer - by Kekko</span>
+    </p>
+  </footer>
+
+  <!-- ================================================
+     JS
+================================================ -->
+  <script>
+    /* cursor glow */
+    const cg = document.getElementById('cg');
+    document.addEventListener('mousemove', e => {
+      cg.style.left = e.clientX + 'px';
+      cg.style.top = e.clientY + 'px';
+      cg.style.opacity = '1';
+    });
+    document.addEventListener('mouseleave', () => cg.style.opacity = '0');
+
+    /* nav opaque on scroll */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('opaque', scrollY > 30), { passive: true });
+
+    /* scroll reveal */
+    const ro = new IntersectionObserver(entries =>
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }),
+      { threshold: .1 }
+    );
+    document.querySelectorAll('.rv,.rl,.rr').forEach(el => ro.observe(el));
+
+    /* active nav */
+    const nlMap = { mission: 'nl-m', azienda: 'nl-a', servizi: 'nl-s', contatti: 'nl-c' };
+    const secObs = new IntersectionObserver(entries =>
+      entries.forEach(e => {
+        const id = nlMap[e.target.id];
+        if (id) document.getElementById(id)?.classList.toggle('active', e.isIntersecting);
+      }),
+      { threshold: .35 }
+    );
+    ['mission', 'azienda', 'servizi', 'contatti'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) secObs.observe(el);
+    });
+
+    /* magnetic buttons */
+    document.querySelectorAll('.btn-w,.btn-g,.nav-cta,.sbtn').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width / 2) * .18;
+        const y = (e.clientY - r.top - r.height / 2) * .18;
+        btn.style.transform = `translate(${x}px,${y}px) scale(1.04)`;
+      });
+      btn.addEventListener('mouseleave', () => btn.style.transform = '');
+    });
+
+    /* form submit feedback */
+    document.getElementById('sb').addEventListener('click', e => {
+      e.preventDefault();
+      const btn = e.currentTarget;
+      const orig = btn.textContent;
+      btn.textContent = '✓ Messaggio inviato!';
+      btn.style.background = '#22c55e';
+      btn.style.transform = '';
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
+    });
+  </script>
+</body>
+
+</html>
